@@ -1,3 +1,16 @@
 from django.contrib import admin
 
-# Register your models here.
+
+class UserAdmin(admin.ModelAdmin):
+    pass
+
+
+class UserProfileAdmin(admin.ModelAdmin):
+    pass
+
+
+class PlaylistAdmin(admin.ModelAdmin):
+    pass
+
+
+
