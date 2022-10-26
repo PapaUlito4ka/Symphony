@@ -1,7 +1,7 @@
 {% extends "admin/base_site.html" %}
 {% load i18n static %}
 
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static "css/sign_up.css" %}">
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static "admin/css/login.css" %}">
     {{ form.media }}
 {% endblock %}
 
@@ -22,7 +22,7 @@
         <div id="branding">
             {% block branding %}
                 <h1 id="site-name">
-                    <a href="admin/login/">Login</a> | <a href=""><u>Sign up</u></a>
+                    <a href=""><u>Login</u></a> | <a href="/admin/sign-up/">Sign up</a>
                 </h1>
             {% endblock %}
         </div>
@@ -57,25 +57,22 @@
 
         <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
             <div class="form-row">
-                {{ form.email.errors }}
-                {{ form.email.label_tag }} {{ form.email }}
-            </div>
-            <div class="form-row">
-                {{ form.name.errors }}
-                {{ form.name.label_tag }} {{ form.name }}
+                {{ form.username.errors }}
+                {{ form.username.label_tag }} {{ form.username }}
             </div>
             <div class="form-row">
                 {{ form.password.errors }}
                 {{ form.password.label_tag }} {{ form.password }}
                 <input type="hidden" name="next" value="{{ next }}">
             </div>
-            <div class="form-row">
-                {{ form.password_confirm.errors }}
-                {{ form.password_confirm.label_tag }} {{ form.password_confirm }}
-                <input type="hidden" name="next" value="{{ next }}">
-            </div>
+            {% url 'admin_password_reset' as password_reset_url %}
+            {% if password_reset_url %}
+                <div class="password-reset-link">
+                    <a href="{{ password_reset_url }}">{% translate 'Forgotten your password or username?' %}</a>
+                </div>
+            {% endif %}
             <div class="submit-row">
-                <input type="submit" value="{% translate 'Sign up' %}">
+                <input type="submit" value="{% translate 'Log in' %}">
             </div>
         </form>
 

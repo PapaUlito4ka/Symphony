@@ -1,5 +1,6 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.hashers import make_password
 
 
 class ArtistManager(BaseUserManager):
@@ -7,6 +8,13 @@ class ArtistManager(BaseUserManager):
     Custom artist model manager where email is the unique identifiers
     for authentication instead of artist names.
     """
+
+    def create(self, password: str = None, **kwargs):
+        if not password:
+            raise Exception('Password must be set')
+        password = make_password(password)
+
+        return super(ArtistManager, self).create(password=password, **kwargs)
 
     def create_user(self, email: str, password: str, **extra_fields):
         """
