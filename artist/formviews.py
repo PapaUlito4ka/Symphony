@@ -1,11 +1,10 @@
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import Permission
 from django.db import transaction
 
 from artist.forms import SignUpForm
-from artist.models import Artist, ArtistProfile, Album, Song
+from artist.models import Artist, ArtistProfile
+from artist.permissions import artist_permissions
 
 
 class SignUpView(FormView):
@@ -23,7 +22,5 @@ class SignUpView(FormView):
             artist=artist,
             name=form.cleaned_data.get('name')
         )
-        content_types = [v for _, v in ContentType.objects.get_for_models(Album, ArtistProfile, Song).items()]
-        permissions = Permission.objects.filter(content_type__in=content_types)
-        artist.user_permissions.add(*permissions)
+        artist.user_permissions.add(*artist_permissions())
         return super(SignUpView, self).form_valid(form)
