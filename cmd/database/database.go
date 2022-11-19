@@ -16,6 +16,7 @@ func InitDB() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
 
 	dsn := fmt.Sprintf(
